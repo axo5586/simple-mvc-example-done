@@ -185,6 +185,7 @@ const searchDogName = (req, res) => {
     return res.json({ error: 'Name is required to perform a search' });
   }
 
+
   return Dog.findByName(req.query.name, (err, doc) => {
     if (err) {
       return res.json({ err });
@@ -194,12 +195,22 @@ const searchDogName = (req, res) => {
       return res.json({ error: 'No dogs found!' });
     }
 
-    // Dog.addAge;
+    // eslint workaround
+    const doc2 = doc;
+
+    doc2.age++;
+    doc2.save().then(() => {
+      res.json({ name: doc2.name, breed: doc2.breed, age: doc2.age });
+    })
+      .catch((error) => {
+        res.json({ error });
+      });
+
 
     return res.json({
-      name: doc.name,
-      breed: doc.breed,
-      age: doc.age,
+      name: doc2.name,
+      breed: doc2.breed,
+      age: doc2.age,
     });
   });
 };
