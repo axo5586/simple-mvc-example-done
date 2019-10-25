@@ -188,11 +188,13 @@ const searchDogName = (req, res) => {
 
   return Dog.findByName(req.query.name, (err, doc) => {
     if (err) {
-      return res.json({ err });
+      res.json({ err });
+      return;
     }
 
     if (!doc) {
-      return res.json({ error: 'No dogs found!' });
+      res.json({ error: 'No dogs found!' });
+      return;
     }
 
     // eslint workaround
@@ -205,13 +207,6 @@ const searchDogName = (req, res) => {
       .catch((error) => {
         res.json({ error });
       });
-
-
-    // return res.json({
-    //   name: doc2.name,
-    //   breed: doc2.breed,
-    //   age: doc2.age,
-    // });
   });
 };
 
