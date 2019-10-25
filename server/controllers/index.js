@@ -207,11 +207,11 @@ const searchDogName = (req, res) => {
       });
 
 
-    return res.json({
-      name: doc2.name,
-      breed: doc2.breed,
-      age: doc2.age,
-    });
+    // return res.json({
+    //   name: doc2.name,
+    //   breed: doc2.breed,
+    //   age: doc2.age,
+    // });
   });
 };
 
