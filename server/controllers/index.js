@@ -125,7 +125,7 @@ const setName = (req, res) => {
   });
 
   savePromise.catch((err) => res.json({ err }));
-  return res.status(200);
+  return res.json;
 };
 
 const setDogName = (req, res) => {
@@ -156,7 +156,7 @@ const setDogName = (req, res) => {
   });
 
   savePromise.catch((err) => res.json({ err }));
-  return res.status(200);
+  return res.json;
 };
 
 const searchName = (req, res) => {
