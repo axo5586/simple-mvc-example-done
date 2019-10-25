@@ -17,7 +17,7 @@ const hostIndex = (req, res) => {
     title: 'Home',
     pageName: 'Home Page',
     currentName: lastAdded.name,
-  })
+  });
 };
 
 const readAllCats = (req, res, callback) => {
@@ -28,12 +28,12 @@ const readCat = (req, res) => {
   const name1 = req.query.name;
 
   const callback = (err, doc) => {
-    if(err){
-      return res.json({err});
+    if (err) {
+      return res.json({ err });
     }
-    
-    res.json(doc);
-  }
+
+    return res.json(doc);
+  };
 
   Cat.findByName(name1, callback);
 };
@@ -50,30 +50,30 @@ const readDog = (req, res) => {
       return res.json({ err });
     }
 
-    res.json(doc);
-  }
+    return res.json(doc);
+  };
 
   Dog.findByName(name1, callback);
 };
 
-//reading in DB -- GET
+// reading in DB -- GET
 const hostPage1 = (req, res) => {
   const callback = (err, doc) => {
-    if(err){
-      return res.json({err});
+    if (err) {
+      return res.json({ err });
     }
 
     return res.render('page1',
-                      {title: 'Cats',
-                       cats: doc,
-                      })
+      {
+        title: 'Cats',
+        cats: doc,
+      });
   };
 
   readAllCats(req, res, callback);
-
 };
 
-//writing in DB -- POST
+// writing in DB -- POST
 const hostPage2 = (req, res) => {
   res.render('page2');
 };
@@ -84,21 +84,18 @@ const hostPage3 = (req, res) => {
 
 const hostPage4 = (req, res) => {
   const callback = (err, doc) => {
-    if(err){
-      return res.json({err});
+    if (err) {
+      return res.json({ err });
     }
 
     return res.render('page4',
-                      {title: 'Dogs',
-                       dogs: doc,
-                      })
+      {
+        title: 'Dogs',
+        dogs: doc,
+      });
   };
 
   readAllDogs(req, res, callback);
-};
-
-const getName = (req, res) => {
-
 };
 
 const setName = (req, res) => {
@@ -109,26 +106,26 @@ const setName = (req, res) => {
   const name = `${req.body.firstname} ${req.body.lastname}`;
 
   const catData = {
-    name, 
+    name,
     bedsOwned: req.body.beds,
   };
 
   const newCat = new Cat(catData);
 
-  //save to database
+  // save to database
   const savePromise = newCat.save();
-  //after,
+  // after,
   savePromise.then(() => {
     lastAdded = newCat;
 
     res.json({
       name: lastAdded.name,
       beds: lastAdded.bedsOwned,
-    })
-  })
+    });
+  });
 
-  savePromise.catch((err) => res.json({err}));
-  
+  savePromise.catch((err) => res.json({ err }));
+  return res.status(200);
 };
 
 const setDogName = (req, res) => {
@@ -137,28 +134,29 @@ const setDogName = (req, res) => {
   }
 
   const dogData = {
-    name: req.body.name, 
+    name: req.body.name,
     breed: req.body.breed,
-    age: req.body.age
+    age: req.body.age,
   };
 
   const newDog = new Dog(dogData);
 
-  //save to database
+  // save to database
   const savePromise = newDog.save();
 
-  //after,
+  // after,
   savePromise.then(() => {
     lastAdded = newDog;
 
     res.json({
       name: lastAdded.name,
       breed: lastAdded.breed,
-      age: lastAdded.age
-    })
-  })
+      age: lastAdded.age,
+    });
+  });
 
-  savePromise.catch((err) => res.json({err}));
+  savePromise.catch((err) => res.json({ err }));
+  return res.status(200);
 };
 
 const searchName = (req, res) => {
@@ -167,20 +165,18 @@ const searchName = (req, res) => {
   }
 
   return Cat.findByName(req.query.name, (err, doc) => {
-     if(err)
-     {
-       return res.json({err});
-     }
+    if (err) {
+      return res.json({ err });
+    }
 
-     if(!doc)
-     {
-       return res.json({error: 'No cats found!'});
-     }
+    if (!doc) {
+      return res.json({ error: 'No cats found!' });
+    }
 
-     return res.json({
-       name: doc.name,
-       bed: doc.bedsOwned,
-     });
+    return res.json({
+      name: doc.name,
+      bed: doc.bedsOwned,
+    });
   });
 };
 
@@ -190,38 +186,34 @@ const searchDogName = (req, res) => {
   }
 
   return Dog.findByName(req.query.name, (err, doc) => {
-     if(err)
-     {
-       return res.json({err});
-     }
+    if (err) {
+      return res.json({ err });
+    }
 
-     if(!doc)
-     {
-       return res.json({error: 'No dogs found!'});
-     }
+    if (!doc) {
+      return res.json({ error: 'No dogs found!' });
+    }
 
-     Dog.addAge;
+    // Dog.addAge;
 
-     return res.json({
-       name: doc.name,
-       breed: doc.breed,
-       age: doc.age
-     });
+    return res.json({
+      name: doc.name,
+      breed: doc.breed,
+      age: doc.age,
+    });
   });
 };
 
 const updateLast = (req, res) => {
-  lastAdded.bedsOwned;
-
   const savePromise = lastAdded.save();
   savePromise.then(() => {
     res.json({
       name: lastAdded.name,
       beds: lastAdded.bedsOwned,
-      })
+    });
   });
 
-  savePromise.catch((err) => res.json({err}));
+  savePromise.catch((err) => res.json({ err }));
 };
 
 const notFound = (req, res) => {
@@ -238,7 +230,6 @@ module.exports = {
   page4: hostPage4,
   readCat,
   readDog,
-  getName,
   setName,
   setDogName,
   updateLast,
